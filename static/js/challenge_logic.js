@@ -1,6 +1,3 @@
-// Add console.log to check to see if our code is working.
-console.log("working");
-
 // We create the tile layer that will be the background of our map.
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -15,6 +12,7 @@ let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/sate
 	accessToken: API_KEY
 });
 
+// Third tile layer that will be the background of the map (deliverable 3)
 let darkMap = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 	maxZoom: 18,
@@ -36,13 +34,13 @@ let baseMaps = {
   "Dark": darkMap
 };
 
-// 1. Add a 2nd layer group for the tectonic plate data.
+// 1. Add layer groups for the tectonic plate data & major earthquake data (deliverable 1, 2)
 let allEarthquakes = new L.LayerGroup();
 let tectonicPlates = new L.LayerGroup();
 let majorEarthquakes = new L.LayerGroup();
 
 
-// 2. Add a reference to the tectonic plates group to the overlays object.
+// 2. Add a reference to the tectonic plates and major earthquake groups to the overlays object (deliverable 1, 2)
 let overlays = {
   "Earthquakes": allEarthquakes,
   "Tectonic Plates": tectonicPlates,
@@ -50,8 +48,7 @@ let overlays = {
 };
 
 
-// Then we add a control to the map that will allow the user to change which
-// layers are visible.
+// Then we add a control to the map that will allow the user to change which layers are visible
 L.control.layers(baseMaps, overlays).addTo(map);
 
 // Retrieve the earthquake GeoJSON data.
@@ -121,7 +118,9 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
   allEarthquakes.addTo(map);
 
 
+  // URL for major earthquake json dataset (deliverable 2)
 let majorEarthquakeData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson";
+
 
   // 3. Retrieve the major earthquake GeoJSON data >4.5 mag for the week.
 d3.json(majorEarthquakeData).then(function(data) {
@@ -218,9 +217,9 @@ legend.onAdd = function() {
   legend.addTo(map);
 
 
-  // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
-
+  // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data (deliverable 1)
   let tectonicData = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
+  
   d3.json(tectonicData).then(function(data) {
     L.geoJSON(data, {
       style: {
